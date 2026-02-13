@@ -283,11 +283,16 @@
 
     async function fetchRate() {
         try {
+            // Endpoint específico para USD para BRL
             const response = await fetch('https://economia.awesomeapi.com.br');
+            if (!response.ok) throw new Error('Erro na rede');
+            
             const data = await response.json();
+            // A estrutura correta é data.USDBRL.bid
             settings.usd = parseFloat(data.USDBRL.bid);
             updateUI();
         } catch (e) { 
+            console.error("Falha ao buscar dólar real. Usando padrão 5.20.", e);
             document.getElementById('usd-rate-display').innerText = "R$ 5,20 (Padrão)";
             updateUI(); 
         }
